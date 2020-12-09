@@ -65,7 +65,7 @@ const handleMouseOverTag = (tags, color) => () => {
     if (!activeTags.includes(tag)) {
       tag.style.borderColor = mixColors(color, '#000000', 0.4);
       tag.style.backgroundColor = mixColors(color, '#000000', 0.7);
-      tag.style.boxShadow = `1px 0px 10px 1px ${mixColors(color, '#000000', 0.6)}`;
+      tag.style.boxShadow = `1px 0 10px 1px ${mixColors(color, '#000000', 0.6)}`;
     }
   }
 };
@@ -96,7 +96,7 @@ const handleClickTag = (tags, color) => () => {
       tag.style.color = 'white';
       tag.style.borderColor = mixColors(color, '#000000', 0.3);
       tag.style.backgroundColor = mixColors(color, '#000000', 0.6);
-      tag.style.boxShadow = `1px 0px 10px 1px ${mixColors(color, '#000000', 0.4)}`;
+      tag.style.boxShadow = `1px 0 10px 1px ${mixColors(color, '#000000', 0.4)}`;
     }
   }
 };

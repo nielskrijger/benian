@@ -53,6 +53,8 @@ footer {
   transition: all linear 0.2s;
 }
 
+/* Homepage */
+
 #homepage {
   height: 100vh;
   display: flex;
@@ -68,13 +70,32 @@ footer {
 .homepage__down-arrow {
   position: absolute;
   top: 87vh;
-  width: 4rem;
   cursor: pointer;
+}
+
+.homepage__down-arrow svg use {
+  transition: all linear 0.15s;
+  color: var(--text-color);
+}
+
+.homepage__down-arrow:hover svg use {
+  color: var(--text-secondary-color);
+}
+
+.homepage__down-arrow svg {
+  transition: all linear 0.15s;
+  width: 4rem;
+}
+
+.homepage__down-arrow:hover svg {
+  width: 4.6rem;
 }
 
 #work-page {
   padding: 0.5rem 0;
 }
+
+/* Work Experiences */
 
 .work {
   position: relative;

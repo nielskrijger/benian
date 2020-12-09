@@ -29,12 +29,15 @@
         By Niels Krijger
       </div>
 
-      <img
-        src="./assets/down-arrow.svg"
-        alt="Scroll down"
+      <a
+        href="#"
         class="homepage__down-arrow"
-        onclick="document.getElementById('work-page').scrollIntoView(true)"
-      />
+        onclick="document.getElementById('work-page').scrollIntoView(true);return false;"
+      >
+        <svg>
+          <use xlink:href="./assets/down-arrow.svg#down-arrow"></use>
+        </svg>
+      </a>
     </div>
 
     <div id="work-page">
@@ -92,6 +95,7 @@
               <div class="tag">Fleet</div>
               <div class="tag">K8S</div>
               <div class="tag">KOPS</div>
+              <div class="tag">Jenkins</div>
             </div>
           </div>
           <div class="work__year">2017</div>
@@ -104,6 +108,7 @@
               <div class="tag">React Native</div>
               <div class="tag">Redux</div>
               <div class="tag">NodeJS</div>
+              <div class="tag">Redis</div>
               <div class="tag">Heroku</div>
             </div>
           </div>
@@ -115,14 +120,15 @@
               <div class="tag">CoffeeScript</div>
               <div class="tag">Python</div>
               <div class="tag">Ionic</div>
-              <div class="tag">Angular 1</div>
+              <div class="tag">AngularJS</div>
               <div class="tag">React</div>
               <div class="tag">Redux</div>
               <div class="tag">NodeJS</div>
-              <div class="tag">K8S</div>
               <div class="tag">Google Cloud</div>
               <div class="tag">MongoDB</div>
+              <div class="tag">Redis</div>
               <div class="tag">Websockets</div>
+              <div class="tag">K8S</div>
             </div>
           </div>
           <div class="work__year">2015</div>
@@ -136,7 +142,6 @@
               <div class="tag">NodeJS</div>
               <div class="tag">Spring</div>
               <div class="tag">Chef</div>
-              <div class="tag">Jenkins</div>
               <div class="tag">AWS</div>
               <div class="tag">MongoDB</div>
               <div class="tag">DynamoDB</div>
@@ -146,6 +151,7 @@
               <div class="tag">RabbitMQ</div>
               <div class="tag">OracleDB</div>
               <div class="tag">WebLogic</div>
+              <div class="tag">Jenkins</div>
             </div>
           </div>
           <div class="work__year">2013</div>
@@ -168,6 +174,7 @@
               <div class="tag">Oracle APEX</div>
               <div class="tag">Oracle Data Integrator</div>
               <div class="tag">Oracle BI Enterprise</div>
+              <div class="tag">Jenkins</div>
             </div>
           </div>
           <div class="work__year">2011</div>
