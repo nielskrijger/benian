@@ -4,7 +4,7 @@ const tagColors = [
   '#021aee',
   '#30B0FF',
   '#d602ee',
-  '#ffde03',
+  '#ffff03',
   '#FF3D00',
   '#40FFFF',
   '#ff0266',
