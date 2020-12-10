@@ -16,6 +16,7 @@ html {
   font-size: min(max(12px, 2vw), 16px);
   scroll-behavior: smooth;
   height: 100%; /* Use height 100% instead of 100vh to fix mobile viewport issues */
+  /*height: calc(var(--vh, 1vh) * 100);*/
 }
 
 body {
@@ -23,7 +24,6 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: initial;
 }
 
 h1 {
@@ -61,10 +61,10 @@ footer {
 }
 
 .full-page {
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
 }
 
 /* Navbar */
@@ -75,14 +75,9 @@ nav {
   background-color: var(--bg-color);
   display: flex;
   justify-content: center;
+  align-items: center;
   z-index: 2;
-}
-
-nav a {
-  display: block;
-  text-align: center;
-  padding: 1.5rem;
-  text-decoration: none;
+  height: 5rem;
 }
 
 .nav--sticky {
@@ -92,18 +87,22 @@ nav a {
 }
 
 .sticky-nav .content {
-  padding-top: 4.2rem; /* Prevents jump when nav becomes sticky */
+  padding-top: 5rem; /* Prevents jump when nav becomes sticky */
 }
 
 .sticky-nav .homepage__introduction {
-  height: initial;
+  height: initial; /* Centers logo on homepage when nav is sticky */
 }
 
 .sticky-nav .homepage__down-arrow {
-  visibility: hidden;
+  visibility: hidden; /* Removes down arrow on homepage when nav is sticky */
 }
 
 .nav__link {
+  padding: 0 1.5rem;
+  display: block;
+  text-align: center;
+  text-decoration: none;
   font-family: 'Open Sans Condensed', sans-serif;
   color: var(--text-secondary-color);
   font-size: 1.2rem;

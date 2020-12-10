@@ -154,7 +154,7 @@ const initNavbarActive = () => {
     pages.set(navLink, targetElement);
   }
 
-  window.addEventListener('scroll', (ev) => {
+  window.addEventListener('scroll', () => {
     let found = false;
     pages.forEach((page, navLink) => {
       navLink.classList.remove('nav__link--active');
@@ -169,9 +169,12 @@ const initNavbarActive = () => {
 };
 
 const scrollDownArrow = () => {
-  const navbarHeight = document.getElementById('navbar').offsetHeight;
-  const contentTop = document.getElementById('content').offsetTop + window.scrollY;
-  window.scrollTo({ top: contentTop - navbarHeight - 14, left: 0 });
+  // timeout necessary for FF and Safari
+  setTimeout(() => {
+    const navbarHeight = document.getElementById('navbar').offsetHeight;
+    const contentTop = document.getElementById('content').offsetTop + window.scrollY;
+    window.scrollTo({ top: contentTop - navbarHeight - 14, left: 0 });
+  }, 1);
 };
 
 window.onload = () => {
