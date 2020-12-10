@@ -233,14 +233,13 @@ const initNavbarHorizontalMotion = () => {
   const handleScroll = () => {
     let currentPage = null;
     let i = -1;
-    const navbarHeight = document.getElementById('navbar').offsetHeight;
 
     if (scrollingTo) {
       currentPage = scrollingFrom;
     } else {
       while (!currentPage && i < pages.length - 1) {
         i++;
-        if (pages[i].targetElement.getBoundingClientRect().top <= navbarHeight) {
+        if (pages[i].targetElement.getBoundingClientRect().top <= 0) {
           currentPage = pages[i];
         }
       }
