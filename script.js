@@ -2,7 +2,7 @@ const tagColors = [
   '#00ff00',
   '#ff0000',
   '#021aee',
-  '#30B0FF',
+  '#20c0FF',
   '#d602ee',
   '#ffff03',
   '#FF3D00',
@@ -12,29 +12,9 @@ const tagColors = [
   '#80CBC4',
   '#BCAAA4',
   '#ee6002',
-  '#607D8B',
+  '#709Ddd',
   '#FFC107',
 ];
-
-const debounce = (fn, wait, immediate) => {
-  let timeout;
-  return function (...args) {
-    const context = this;
-    const later = function () {
-      timeout = null;
-      if (!immediate) {
-        fn.apply(context, args);
-      }
-    };
-
-    const callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) {
-      fn.apply(context, args);
-    }
-  };
-};
 
 const mixColors = (color1, color2, percent) => {
   const red1 = parseInt(color1[1] + color1[2], 16);
@@ -142,7 +122,7 @@ const initTagHighlighting = () => {
  *
  * The navbar remains sticky for the entire session for easier navigation, even on the homepage.
  */
-const initStickyNavbar = () => {
+const initNavbarStickiness = () => {
   const navbar = document.getElementById('navbar');
   let offset = navbar.offsetTop;
 
@@ -152,7 +132,7 @@ const initStickyNavbar = () => {
 
       // The sticky navbar changes the layout in various places, so we're adding
       // a class to the <body> so that these changes can be controlled in CSS.
-      document.getElementsByTagName('body')[0].classList.add('sticky-nav');
+      document.querySelector('body').classList.add('sticky-nav');
     }
   };
 
@@ -165,11 +145,35 @@ const initStickyNavbar = () => {
   positionNavbar(); // Necessary on refresh with an anchor in the url
 };
 
-const initNavbarActive = () => {
+const getNavbarPages = () => {
   const navbar = document.getElementById('navbar');
   const navLinks = Array.from(navbar.getElementsByTagName('a'));
-  const pages = new Map();
-  let scrollingTo = null;
+  const pages = [];
+
+  for (const navLink of navLinks) {
+    const anchor = navLink.getAttribute('href').replace('#', '');
+    const targetElement = document.getElementById(anchor);
+    pages.push({ navLink, targetElement });
+  }
+  return pages.reverse(); // Detection algorithm works in reverse
+};
+
+let scrollingTo = null;
+let scrollingFrom = null;
+
+/**
+ * Changes the navbar styling when clicking or scrolling through the page.
+ */
+const initNavbarActive = () => {
+  const pages = getNavbarPages();
+  const navLinks = pages.map(({ navLink }) => navLink);
+
+  const getCurrentPage = () => {
+    const navbarHeight = document.getElementById('navbar').offsetHeight;
+    return pages.find(({ targetElement }) => {
+      return targetElement.getBoundingClientRect().top <= navbarHeight;
+    });
+  };
 
   const resetActive = () => {
     navLinks.forEach((link) => link.classList.remove('nav__link--active'));
@@ -179,10 +183,11 @@ const initNavbarActive = () => {
    * Upon click mark link as active and keep track of which element we're scrolling
    * to. Until smooth scrolling has finished we want to keep the nav link active.
    */
-  const handleClick = (navLink) => () => {
+  const handleClick = (page) => () => {
     resetActive();
-    navLink.classList.add('nav__link--active');
-    scrollingTo = navLink;
+    page.navLink.classList.add('nav__link--active');
+    scrollingFrom = getCurrentPage();
+    scrollingTo = page;
   };
 
   /**
@@ -190,32 +195,87 @@ const initNavbarActive = () => {
    * clicked on one of the nav links.
    */
   const handleScroll = () => {
-    let found = null;
+    const currentPage = getCurrentPage();
 
-    pages.forEach((page, navLink) => {
-      if (!found) {
-        found = page.getBoundingClientRect().top <= 80 ? navLink : null;
-        if (found === scrollingTo) {
-          scrollingTo = null; // Smooth scrolling after click has finished
-        }
-      }
-    });
+    if (scrollingTo && Math.abs(scrollingTo.targetElement.getBoundingClientRect().top) <= 10) {
+      scrollingFrom = null;
+      scrollingTo = null; // Smooth scrolling after click has finished
+    }
 
     if (!scrollingTo) {
       resetActive();
-      if (found) {
-        found.classList.add('nav__link--active');
+      if (currentPage) {
+        currentPage.navLink.classList.add('nav__link--active');
       }
     }
   };
 
-  // Reverse so we check the last page first
-  for (const navLink of navLinks.reverse()) {
-    const anchor = navLink.getAttribute('href').replace('#', '');
-    const targetElement = document.getElementById(anchor);
-    pages.set(navLink, targetElement);
-    navLink.addEventListener('click', handleClick(navLink));
-  }
+  /**
+   * Adds scroll and click handlers for dynamic navbar styling.
+   */
+  const registerEventHandlers = () => {
+    for (const page of pages) {
+      page.navLink.addEventListener('click', handleClick(page));
+    }
+    window.addEventListener('scroll', handleScroll);
+  };
+
+  registerEventHandlers();
+  handleScroll(); // Call function if user opened page with an anchor
+};
+
+/**
+ * Moves the navbar element horizontally while scrolling
+ */
+const initNavbarHorizontalMotion = () => {
+  const pages = getNavbarPages();
+
+  const handleScroll = () => {
+    let currentPage = null;
+    let i = -1;
+    const navbarHeight = document.getElementById('navbar').offsetHeight;
+
+    if (scrollingTo) {
+      currentPage = scrollingFrom;
+    } else {
+      while (!currentPage && i < pages.length - 1) {
+        i++;
+        if (pages[i].targetElement.getBoundingClientRect().top <= navbarHeight) {
+          currentPage = pages[i];
+        }
+      }
+    }
+
+    const currentPageOffset = currentPage
+      ? parseInt(currentPage.navLink.getAttribute('data-offset'))
+      : 0;
+
+    // Don't change offset when we've reached the last page
+    if (i === 0) {
+      document.querySelector('.navbar__content').style.left = `${currentPageOffset}rem`;
+      return;
+    }
+
+    // Determine distance we have to travel between this page and the next
+    // If currentPage is null we're on the homepage (which cannot be navigated to as a navlink)
+    let nextPage = currentPage ? pages[i - 1] : pages[i];
+    if (scrollingTo) {
+      nextPage = scrollingTo;
+    }
+    const nextPageOffset = parseInt(nextPage.navLink.getAttribute('data-offset'));
+    const distance = nextPageOffset - currentPageOffset;
+
+    // Determine the progress how much of the distance has been traveled
+    const currentPageTop = currentPage
+      ? currentPage.targetElement.getBoundingClientRect().top
+      : -window.scrollY;
+    const nextPageTop = nextPage.targetElement.getBoundingClientRect().top;
+    const totalHeight = Math.abs(nextPageTop - currentPageTop);
+    const progress = Math.abs(currentPageTop) / totalHeight;
+
+    const newOffset = `${currentPageOffset + progress * distance}rem`;
+    document.querySelector('.navbar__content').style.left = newOffset;
+  };
 
   window.addEventListener('scroll', handleScroll);
   handleScroll();
@@ -230,6 +290,7 @@ const scrollDownArrow = () => {
 
 window.onload = () => {
   initTagHighlighting();
-  initStickyNavbar();
+  initNavbarStickiness();
   initNavbarActive();
+  initNavbarHorizontalMotion();
 };

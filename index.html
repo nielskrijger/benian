@@ -25,7 +25,7 @@
 
   <body>
     <div class="full-page" id="homepage">
-      <div class="homepage__introduction">
+      <div class="homepage__content">
         <h1>BENIAN</h1>
         Web Development<br />
         By Niels Krijger
@@ -42,9 +42,11 @@
     </div>
 
     <nav id="navbar">
-      <a href="#content" class="nav__link">EXPERIENCE</a>
-      <a href="#education" class="nav__link">EDUCATION</a>
-      <a href="#company-details" class="nav__link">CONTACT</a>
+      <div class="navbar__content">
+        <a href="#content" class="nav__link" data-offset="6rem">EXPERIENCE</a>
+        <a href="#education" class="nav__link" data-offset="-0.5rem">EDUCATION</a>
+        <a href="#company-details" class="nav__link" data-offset="-6rem">CONTACT</a>
+      </div>
     </nav>
 
     <main class="content" id="content">
@@ -245,7 +247,30 @@
 
       <div class="education full-page" id="education">TEST</div>
 
-      <div class="company-details full-page" id="company-details">TEST</div>
+      <div class="company-details full-page" id="company-details">
+        <div class="company-details__content">
+          <a href="https://www.linkedin.com/in/nielskrijger/" target="_blank">
+            <svg>
+              <use xlink:href="./assets/linkedin.svg#linkedin"></use>
+            </svg>
+            LinkedIn
+          </a>
+
+          <a href="mailto:niels@kryger.nl" target="_blank" class="email">
+            <svg>
+              <use xlink:href="./assets/email.svg#email"></use>
+            </svg>
+            niels@kryger.nl
+          </a>
+
+          <a href="https://www.nielskrijger.com" target="_blank">
+            <svg>
+              <use xlink:href="./assets/blog.svg#blog"></use>
+            </svg>
+            Blog
+          </a>
+        </div>
+      </div>
     </main>
     <footer></footer>
   </body>
