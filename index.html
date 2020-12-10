@@ -29,11 +29,7 @@
         By Niels Krijger
       </div>
 
-      <a
-        href="#"
-        class="homepage__down-arrow"
-        onclick="document.getElementById('navbar').scrollIntoView(true);return false;"
-      >
+      <a href="#" class="homepage__down-arrow" onclick="scrollDownArrow()">
         <svg>
           <use xlink:href="./assets/down-arrow.svg#down-arrow"></use>
         </svg>
@@ -41,9 +37,9 @@
     </div>
 
     <nav id="navbar">
-      <a href="#content">WORK EXPERIENCE</a>
-      <a href="#education">EDUCATION</a>
-      <a href="#company-details">COMPANY DETAILS</a>
+      <a href="#content" class="nav__link">TECH</a>
+      <a href="#education" class="nav__link">EDUCATION</a>
+      <a href="#company-details" class="nav__link">CONTACT</a>
     </nav>
 
     <main class="content" id="content">
@@ -244,7 +240,7 @@
 
       <div class="education full-page" id="education">TEST</div>
 
-      <div class="company-details full-page" id="company-details">>TEST</div>
+      <div class="company-details full-page" id="company-details">TEST</div>
     </main>
     <footer></footer>
   </body>

@@ -101,7 +101,7 @@ const handleClickTag = (tags, color) => () => {
   }
 };
 
-const initTagHiglighting = () => {
+const initTagHighlighting = () => {
   const groupedTags = findTagGroups().values();
   let i = 0;
   for (const tagGroup of groupedTags) {
@@ -117,20 +117,65 @@ const initTagHiglighting = () => {
   }
 };
 
+/**
+ * Makes the navbar sticky once the browser scrolls below the original navbar position.
+ *
+ * The navbar remains sticky for the entire session for easier navigation, even on the homepage.
+ */
 const initStickyNavbar = () => {
-  const nav = document.getElementsByTagName('nav')[0];
+  const navbar = document.getElementById('navbar');
+  let offset = navbar.offsetTop;
 
-  window.onscroll = () => {
-    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-    if (window.pageYOffset >= vh) {
-      nav.classList.add('nav__sticky');
-    } else {
-      nav.classList.remove('nav__sticky');
+  const positionNavbar = () => {
+    if (window.pageYOffset >= offset) {
+      navbar.classList.add('nav--sticky');
+      document.getElementsByTagName('body')[0].classList.add('sticky-nav');
     }
   };
+
+  window.addEventListener('resize', () => {
+    offset = navbar.offsetTop;
+  });
+
+  window.addEventListener('scroll', positionNavbar);
+
+  positionNavbar(); // Necessary on refresh with an anchor in the url
+};
+
+const initNavbarActive = () => {
+  const navbar = document.getElementById('navbar');
+  const navLinks = navbar.getElementsByTagName('a');
+  const pages = new Map();
+
+  // Reverse so we check the last page first
+  for (const navLink of [...navLinks].reverse()) {
+    const anchor = navLink.getAttribute('href').replace('#', '');
+    const targetElement = document.getElementById(anchor);
+    pages.set(navLink, targetElement);
+  }
+
+  window.addEventListener('scroll', (ev) => {
+    let found = false;
+    pages.forEach((page, navLink) => {
+      navLink.classList.remove('nav__link--active');
+      if (!found) {
+        found = page.getBoundingClientRect().top <= 80;
+        if (found) {
+          navLink.classList.add('nav__link--active');
+        }
+      }
+    });
+  });
+};
+
+const scrollDownArrow = () => {
+  const navbarHeight = document.getElementById('navbar').offsetHeight;
+  const contentTop = document.getElementById('content').offsetTop + window.scrollY;
+  window.scrollTo({ top: contentTop - navbarHeight - 14, left: 0 });
 };
 
 window.onload = () => {
-  initTagHiglighting();
+  initTagHighlighting();
   initStickyNavbar();
+  initNavbarActive();
 };

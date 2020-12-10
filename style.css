@@ -15,7 +15,7 @@
 html {
   font-size: min(max(12px, 2vw), 16px);
   scroll-behavior: smooth;
-  height: 100%;
+  height: 100%; /* Use height 100% instead of 100vh to fix mobile viewport issues */
 }
 
 body {
@@ -23,6 +23,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
+  overflow: initial;
 }
 
 h1 {
@@ -84,14 +85,32 @@ nav a {
   text-decoration: none;
 }
 
-.nav__sticky {
+.nav--sticky {
   position: fixed;
   top: 0;
   width: 100%;
 }
 
-.nav__sticky + .content {
-  padding-top: 4.2rem; /* Prevent jump */
+.sticky-nav .content {
+  padding-top: 4.2rem; /* Prevents jump when nav becomes sticky */
+}
+
+.sticky-nav .homepage__introduction {
+  height: initial;
+}
+
+.sticky-nav .homepage__down-arrow {
+  visibility: hidden;
+}
+
+.nav__link {
+  font-family: 'Open Sans Condensed', sans-serif;
+  color: var(--text-secondary-color);
+  font-size: 1.2rem;
+}
+
+.nav__link--active {
+  color: var(--text-color);
 }
 
 /* Homepage */
@@ -117,11 +136,11 @@ nav a {
 
 .homepage__down-arrow svg {
   transition: all linear 0.15s;
-  width: 4rem;
+  width: 3rem;
 }
 
 .homepage__down-arrow:hover svg {
-  width: 4.6rem;
+  width: 3.4rem;
 }
 
 /* Work Experiences */
