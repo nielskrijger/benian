@@ -2,6 +2,7 @@
   --bg-color: black;
   --text-color: white;
   --text-secondary-color: #bbb;
+  --text-color-warning: orange;
   --border-color: #444;
 }
 
@@ -51,7 +52,7 @@ footer {
 noscript {
   display: block;
   padding: 1rem 0;
-  color: red;
+  color: var(--text-color-warning);
   max-width: 14rem;
 }
 
@@ -76,6 +77,10 @@ noscript {
   align-items: center;
   justify-content: center;
   height: 100vh;
+}
+
+.full-page#homepage {
+  height: 100%;
 }
 
 /* Navbar */
