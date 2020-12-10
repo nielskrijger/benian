@@ -12,15 +12,17 @@
   font-weight: 300;
 }
 
+html {
+  font-size: min(max(12px, 2vw), 16px);
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
 body {
   background-color: var(--bg-color);
   margin: 0;
   padding: 0;
-}
-
-html {
-  font-size: min(max(12px, 2vw), 16px);
-  scroll-behavior: smooth;
+  height: 100%;
 }
 
 h1 {
@@ -56,7 +58,7 @@ footer {
 /* Homepage */
 
 #homepage {
-  height: 100vh;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -75,11 +77,11 @@ footer {
 
 .homepage__down-arrow svg use {
   transition: all linear 0.15s;
-  color: var(--text-color);
+  color: var(--text-secondary-color);
 }
 
 .homepage__down-arrow:hover svg use {
-  color: var(--text-secondary-color);
+  color: var(--text-color);
 }
 
 .homepage__down-arrow svg {
