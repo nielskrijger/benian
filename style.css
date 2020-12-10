@@ -48,6 +48,17 @@ footer {
   height: 4rem;
 }
 
+noscript {
+  display: block;
+  padding: 1rem 0;
+  color: red;
+  max-width: 14rem;
+}
+
+.content {
+  scroll-margin-top: 5rem;
+}
+
 .tag {
   font-size: max(12px, 0.8rem);
   border: 1px solid var(--border-color);
@@ -88,6 +99,7 @@ nav {
 
 .sticky-nav .content {
   padding-top: 5rem; /* Prevents jump when nav becomes sticky */
+  scroll-margin-top: 0;
 }
 
 .sticky-nav .homepage__introduction {
@@ -108,7 +120,8 @@ nav {
   font-size: 1.2rem;
 }
 
-.nav__link--active {
+.nav__link--active,
+.nav__link--scrolling {
   color: var(--text-color);
 }
 
@@ -205,6 +218,7 @@ nav {
 }
 
 .work__freelance {
+  padding: 0 2px;
   color: var(--text-secondary-color);
   font-family: 'Noto Serif', serif;
   font-size: 0.9rem;

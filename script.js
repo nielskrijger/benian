@@ -16,6 +16,26 @@ const tagColors = [
   '#FFC107',
 ];
 
+const debounce = (fn, wait, immediate) => {
+  let timeout;
+  return function (...args) {
+    const context = this;
+    const later = function () {
+      timeout = null;
+      if (!immediate) {
+        fn.apply(context, args);
+      }
+    };
+
+    const callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) {
+      fn.apply(context, args);
+    }
+  };
+};
+
 const mixColors = (color1, color2, percent) => {
   const red1 = parseInt(color1[1] + color1[2], 16);
   const green1 = parseInt(color1[3] + color1[4], 16);
@@ -129,6 +149,9 @@ const initStickyNavbar = () => {
   const positionNavbar = () => {
     if (window.pageYOffset >= offset) {
       navbar.classList.add('nav--sticky');
+
+      // The sticky navbar changes the layout in various places, so we're adding
+      // a class to the <body> so that these changes can be controlled in CSS.
       document.getElementsByTagName('body')[0].classList.add('sticky-nav');
     }
   };
@@ -144,37 +167,65 @@ const initStickyNavbar = () => {
 
 const initNavbarActive = () => {
   const navbar = document.getElementById('navbar');
-  const navLinks = navbar.getElementsByTagName('a');
+  const navLinks = Array.from(navbar.getElementsByTagName('a'));
   const pages = new Map();
+  let scrollingTo = null;
 
-  // Reverse so we check the last page first
-  for (const navLink of [...navLinks].reverse()) {
-    const anchor = navLink.getAttribute('href').replace('#', '');
-    const targetElement = document.getElementById(anchor);
-    pages.set(navLink, targetElement);
-  }
+  const resetActive = () => {
+    navLinks.forEach((link) => link.classList.remove('nav__link--active'));
+  };
 
-  window.addEventListener('scroll', () => {
-    let found = false;
+  /**
+   * Upon click mark link as active and keep track of which element we're scrolling
+   * to. Until smooth scrolling has finished we want to keep the nav link active.
+   */
+  const handleClick = (navLink) => () => {
+    resetActive();
+    navLink.classList.add('nav__link--active');
+    scrollingTo = navLink;
+  };
+
+  /**
+   * Marks nav link as active if user scrolled it into view unless the user has
+   * clicked on one of the nav links.
+   */
+  const handleScroll = () => {
+    let found = null;
+
     pages.forEach((page, navLink) => {
-      navLink.classList.remove('nav__link--active');
       if (!found) {
-        found = page.getBoundingClientRect().top <= 80;
-        if (found) {
-          navLink.classList.add('nav__link--active');
+        found = page.getBoundingClientRect().top <= 80 ? navLink : null;
+        if (found === scrollingTo) {
+          scrollingTo = null; // Smooth scrolling after click has finished
         }
       }
     });
-  });
+
+    if (!scrollingTo) {
+      resetActive();
+      if (found) {
+        found.classList.add('nav__link--active');
+      }
+    }
+  };
+
+  // Reverse so we check the last page first
+  for (const navLink of navLinks.reverse()) {
+    const anchor = navLink.getAttribute('href').replace('#', '');
+    const targetElement = document.getElementById(anchor);
+    pages.set(navLink, targetElement);
+    navLink.addEventListener('click', handleClick(navLink));
+  }
+
+  window.addEventListener('scroll', handleScroll);
+  handleScroll();
 };
 
 const scrollDownArrow = () => {
   // timeout necessary for FF and Safari
   setTimeout(() => {
-    const navbarHeight = document.getElementById('navbar').offsetHeight;
-    const contentTop = document.getElementById('content').offsetTop + window.scrollY;
-    window.scrollTo({ top: contentTop - navbarHeight - 14, left: 0 });
-  }, 1);
+    window.scrollTo({ top: window.innerHeight, left: 0 });
+  }, 5);
 };
 
 window.onload = () => {
