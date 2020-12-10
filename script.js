@@ -101,7 +101,7 @@ const handleClickTag = (tags, color) => () => {
   }
 };
 
-window.onload = () => {
+const initTagHiglighting = () => {
   const groupedTags = findTagGroups().values();
   let i = 0;
   for (const tagGroup of groupedTags) {
@@ -115,4 +115,22 @@ window.onload = () => {
     }
     i++;
   }
+};
+
+const initStickyNavbar = () => {
+  const nav = document.getElementsByTagName('nav')[0];
+
+  window.onscroll = () => {
+    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    if (window.pageYOffset >= vh) {
+      nav.classList.add('nav__sticky');
+    } else {
+      nav.classList.remove('nav__sticky');
+    }
+  };
+};
+
+window.onload = () => {
+  initTagHiglighting();
+  initStickyNavbar();
 };

@@ -39,6 +39,10 @@ h2 {
   padding: 2vh 0;
 }
 
+main {
+  height: 100%;
+}
+
 footer {
   height: 4rem;
 }
@@ -55,14 +59,42 @@ footer {
   transition: all linear 0.2s;
 }
 
-/* Homepage */
-
-#homepage {
+.full-page {
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
+/* Navbar */
+
+nav {
+  overflow: hidden;
+  text-align: center;
+  background-color: var(--bg-color);
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+}
+
+nav a {
+  display: block;
+  text-align: center;
+  padding: 1.5rem;
+  text-decoration: none;
+}
+
+.nav__sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.nav__sticky + .content {
+  padding-top: 4.2rem; /* Prevent jump */
+}
+
+/* Homepage */
 
 .homepage__introduction {
   height: 15rem;
@@ -92,13 +124,10 @@ footer {
   width: 4.6rem;
 }
 
-#work-page {
-  padding: 0.5rem 0;
-}
-
 /* Work Experiences */
 
 .work {
+  margin: 1rem 0;
   position: relative;
   display: flex;
   flex-direction: column;

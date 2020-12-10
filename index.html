@@ -22,7 +22,7 @@
   </head>
 
   <body>
-    <div id="homepage">
+    <div class="full-page" id="homepage">
       <div class="homepage__introduction">
         <h1>BENIAN</h1>
         Web Development<br />
@@ -32,7 +32,7 @@
       <a
         href="#"
         class="homepage__down-arrow"
-        onclick="document.getElementById('work-page').scrollIntoView(true);return false;"
+        onclick="document.getElementById('navbar').scrollIntoView(true);return false;"
       >
         <svg>
           <use xlink:href="./assets/down-arrow.svg#down-arrow"></use>
@@ -40,8 +40,13 @@
       </a>
     </div>
 
-    <div id="work-page">
-      <h2>WORK EXPERIENCE</h2>
+    <nav id="navbar">
+      <a href="#content">WORK EXPERIENCE</a>
+      <a href="#education">EDUCATION</a>
+      <a href="#company-details">COMPANY DETAILS</a>
+    </nav>
+
+    <main class="content" id="content">
       <div class="work">
         <div class="work__experiences">
           <div class="work__year">2020</div>
@@ -236,13 +241,11 @@
         </div>
         <div class="work__line"></div>
       </div>
-    </div>
 
-    <h2>EDUCATION</h2>
-    <div class="education">TEST</div>
+      <div class="education full-page" id="education">TEST</div>
 
-    <h2>COMPANY DETAILS</h2>
-    <div class="company-details">TEST</div>
+      <div class="company-details full-page" id="company-details">>TEST</div>
+    </main>
     <footer></footer>
   </body>
 </html>
