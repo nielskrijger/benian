@@ -65,13 +65,12 @@ footer {
 }
 
 .homepage__introduction {
-  margin: auto;
   height: 15rem;
 }
 
 .homepage__down-arrow {
   position: absolute;
-  top: 87vh;
+  bottom: 1vh;
   cursor: pointer;
 }
 
