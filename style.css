@@ -54,8 +54,11 @@ a {
   text-decoration: none;
 }
 
-a:hover {
-  color: var(--link-hover-color);
+@media only screen and (min-width: 600px) {
+  /* Disable hover effects on handhelds; safari on mobile and :hover don't play nice */
+  a:hover {
+    color: var(--link-hover-color);
+  }
 }
 
 noscript {
