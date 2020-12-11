@@ -21,10 +21,13 @@
     />
 
     <script type="text/javascript" src="script.js"></script>
+    <script>
+      // Fix safari mobile keeping :hover active
+      document.addEventListener('click', x=>0)
+    </script>
   </head>
 
-  <!-- tabIndex=0 to fix safari mobile hover issues -->
-  <body tabIndex=0>
+  <body>
     <div class="full-page" id="homepage">
       <div class="homepage__content">
         <h1>BENIAN</h1>
