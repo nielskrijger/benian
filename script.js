@@ -145,6 +145,9 @@ const initNavbarStickiness = () => {
   positionNavbar(); // Necessary on refresh with an anchor in the url
 };
 
+/**
+ * Returns an array of navLinks and their associated page.
+ */
 const getNavbarPages = () => {
   const navbar = document.getElementById('navbar');
   const navLinks = Array.from(navbar.getElementsByTagName('a'));
@@ -158,8 +161,37 @@ const getNavbarPages = () => {
   return pages.reverse(); // Detection algorithm works in reverse
 };
 
-let scrollingTo = null;
-let scrollingFrom = null;
+/**
+ * This class tracks when the browser is scrolling after clicking one of the
+ * navigation links.
+ *
+ * Due to "scroll-behaviour: smooth" scrolling takes a while and other effects
+ * need to sync-up with this motion.
+ */
+class ScrollingMotion {
+  constructor() {
+    this.scrollingFrom = null;
+    this.scrollingTo = null;
+  }
+
+  setScrolling(scrollingFrom, scrollingTo) {
+    this.scrollingFrom = scrollingFrom;
+    this.scrollingTo = scrollingTo;
+  }
+
+  isScrolling() {
+    return this.scrollingTo !== null;
+  }
+
+  checkScrollingFinished() {
+    if (this.isScrolling() && Math.abs(this.scrollingTo.targetElement.getBoundingClientRect().top) <= 10) {
+      this.scrollingFrom = null;
+      this.scrollingTo = null;
+    }
+  }
+}
+
+const scrollingMotion = new ScrollingMotion();
 
 /**
  * Changes the navbar styling when clicking or scrolling through the page.
@@ -186,8 +218,7 @@ const initNavbarActive = () => {
   const handleClick = (page) => () => {
     resetActive();
     page.navLink.classList.add('nav__link--active');
-    scrollingFrom = getCurrentPage();
-    scrollingTo = page;
+    scrollingMotion.setScrolling(getCurrentPage(), page);
   };
 
   /**
@@ -195,14 +226,9 @@ const initNavbarActive = () => {
    * clicked on one of the nav links.
    */
   const handleScroll = () => {
+    scrollingMotion.checkScrollingFinished();
     const currentPage = getCurrentPage();
-
-    if (scrollingTo && Math.abs(scrollingTo.targetElement.getBoundingClientRect().top) <= 10) {
-      scrollingFrom = null;
-      scrollingTo = null; // Smooth scrolling after click has finished
-    }
-
-    if (!scrollingTo) {
+    if (!scrollingMotion.isScrolling()) {
       resetActive();
       if (currentPage) {
         currentPage.navLink.classList.add('nav__link--active');
@@ -225,42 +251,58 @@ const initNavbarActive = () => {
 };
 
 /**
+ * Returns the current and nextPage. If the app is in the process of scrolling
+ * returns the origin and target pages instead.
+ *
+ * Returns nextPage = null when reading the last page.
+ * Returns currentPage = null for the homepage which cannot be accessed through
+ * the navbar.
+ */
+const getCurrentAndNextPage = (pages) => {
+  if (scrollingMotion.isScrolling()) {
+    return {
+      currentPage: scrollingMotion.scrollingFrom,
+      nextPage: scrollingMotion.scrollingTo
+    }
+  }
+
+  let currentPage = null;
+  let i = -1;
+
+  while (!currentPage && i < pages.length - 1) {
+    i++;
+    if (pages[i].targetElement.getBoundingClientRect().top <= 0) {
+      currentPage = pages[i];
+    }
+  }
+
+  return {
+    currentPage,
+    nextPage: currentPage ? pages[i - 1] : pages[i]
+  }
+}
+
+/**
  * Moves the navbar element horizontally while scrolling
  */
 const initNavbarHorizontalMotion = () => {
   const pages = getNavbarPages();
 
   const handleScroll = () => {
-    let currentPage = null;
-    let i = -1;
-
-    if (scrollingTo) {
-      currentPage = scrollingFrom;
-    } else {
-      while (!currentPage && i < pages.length - 1) {
-        i++;
-        if (pages[i].targetElement.getBoundingClientRect().top <= 0) {
-          currentPage = pages[i];
-        }
-      }
-    }
+    const { currentPage, nextPage } = getCurrentAndNextPage(pages);
 
     const currentPageOffset = currentPage
       ? parseInt(currentPage.navLink.getAttribute('data-offset'))
       : 0;
 
     // Don't change offset when we've reached the last page
-    if (i === 0) {
+    if (nextPage === null) {
       document.querySelector('.navbar__content').style.left = `${currentPageOffset}rem`;
       return;
     }
 
     // Determine distance we have to travel between this page and the next
     // If currentPage is null we're on the homepage (which cannot be navigated to as a navlink)
-    let nextPage = currentPage ? pages[i - 1] : pages[i];
-    if (scrollingTo) {
-      nextPage = scrollingTo;
-    }
     const nextPageOffset = parseInt(nextPage.navLink.getAttribute('data-offset'));
     const distance = nextPageOffset - currentPageOffset;
 
@@ -281,7 +323,7 @@ const initNavbarHorizontalMotion = () => {
 };
 
 const scrollDownArrow = () => {
-  // timeout necessary for FF and Safari
+  // timeout necessary for FF and Safari to fix issue with innerHeight not set yet
   setTimeout(() => {
     window.scrollTo({ top: window.innerHeight, left: 0 });
   }, 5);
