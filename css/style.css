@@ -1,11 +1,11 @@
 :root {
   --bg-color: #111;
   --text-color: white;
-  --text-secondary-color: #bbb;
+  --text-secondary-color: #ccc;
   --text-tertiary-color: #444;
   --text-color-warning: orange;
   --link-hover-color: #30b0ff;
-  --border-color: #444;
+  --border-color: #555;
 }
 
 * {
@@ -40,6 +40,11 @@ h2 {
   font-size: 2rem;
   text-align: center;
   padding: 2vh 0;
+}
+
+h3 {
+  font-family: 'Open Sans Condensed', sans-serif;
+  margin: 0 0 1rem 0;
 }
 
 main {
@@ -126,14 +131,6 @@ nav {
   scroll-margin-top: 0;
 }
 
-.sticky-nav .homepage__content {
-  height: initial; /* Centers logo on homepage when nav is sticky */
-}
-
-.sticky-nav .homepage__down-arrow {
-  visibility: hidden; /* Removes down arrow on homepage when nav is sticky */
-}
-
 .nav__link {
   padding: 1rem 0.5rem;
   display: block;
@@ -160,13 +157,13 @@ a.nav__link--active {
   cursor: pointer;
 }
 
-.homepage__down-arrow svg use {
+.homepage__down-arrow svg {
   transition: all linear 0.15s;
-  color: var(--text-secondary-color);
+  fill: var(--text-secondary-color);
 }
 
-.homepage__down-arrow:hover svg use {
-  color: var(--text-color);
+.homepage__down-arrow:hover svg {
+  fill: var(--text-color);
 }
 
 .homepage__down-arrow svg {
@@ -175,7 +172,15 @@ a.nav__link--active {
 }
 
 .homepage__down-arrow:hover svg {
-  width: 3.4rem;
+  width: 3.3rem;
+}
+
+.sticky-nav .homepage__content {
+  height: initial; /* Centers logo on homepage when nav is sticky */
+}
+
+.sticky-nav .homepage__down-arrow {
+  visibility: hidden; /* Removes down arrow on homepage when nav is sticky */
 }
 
 /* Work Experiences */
@@ -279,6 +284,23 @@ a.nav__link--active {
   .work__job--left .work__tags {
     justify-content: flex-end;
   }
+}
+
+/* Education */
+
+.education {
+  display: flex;
+  flex-direction: column;
+}
+
+.education__block {
+  width: 20rem;
+  border: 1px solid var(--text-color);
+  padding: 1rem;
+}
+
+.education__block ~ .education__block {
+  margin-top: 2rem;
 }
 
 /* Company details */

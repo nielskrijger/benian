@@ -16,6 +16,10 @@ const tagColors = [
   '#FFC107',
 ];
 
+const mix = (start, end, percent) => {
+  return start + percent * (end - start);
+};
+
 const mixColors = (color1, color2, percent) => {
   const red1 = parseInt(color1[1] + color1[2], 16);
   const green1 = parseInt(color1[3] + color1[4], 16);
@@ -33,10 +37,6 @@ const mixColors = (color1, color2, percent) => {
   const g = green.toString(16).padStart(2, '0');
   const b = blue.toString(16).padStart(2, '0');
   return '#' + r + g + b;
-};
-
-const mix = (start, end, percent) => {
-  return start + percent * (end - start);
 };
 
 /**
@@ -120,7 +120,8 @@ const initTagHighlighting = () => {
 /**
  * Makes the navbar sticky once the browser scrolls below the original navbar position.
  *
- * The navbar remains sticky for the entire session for easier navigation, even on the homepage.
+ * The navbar remains sticky for the entire session for easier navigation, even
+ * on the homepage where it is not shown on first load.
  */
 const initNavbarStickiness = () => {
   const navbar = document.getElementById('navbar');
@@ -131,7 +132,7 @@ const initNavbarStickiness = () => {
       navbar.classList.add('nav--sticky');
 
       // The sticky navbar changes the layout in various places, so we're adding
-      // a class to the <body> so that these changes can be controlled in CSS.
+      // a class to the <body> to control those changes in CSS.
       document.querySelector('body').classList.add('sticky-nav');
     }
   };
@@ -146,7 +147,7 @@ const initNavbarStickiness = () => {
 };
 
 /**
- * Returns an array of navLinks and their associated page.
+ * Returns an array of navLinks and their associated content page.
  */
 const getNavbarPages = () => {
   const navbar = document.getElementById('navbar');
@@ -183,8 +184,11 @@ class ScrollingMotion {
     return this.scrollingTo !== null;
   }
 
-  checkScrollingFinished() {
-    if (this.isScrolling() && Math.abs(this.scrollingTo.targetElement.getBoundingClientRect().top) <= 10) {
+  checkScrollHasFinished() {
+    if (
+      this.isScrolling() &&
+      Math.abs(this.scrollingTo.targetElement.getBoundingClientRect().top) <= 10
+    ) {
       this.scrollingFrom = null;
       this.scrollingTo = null;
     }
@@ -226,7 +230,7 @@ const initNavbarActive = () => {
    * clicked on one of the nav links.
    */
   const handleScroll = () => {
-    scrollingMotion.checkScrollingFinished();
+    scrollingMotion.checkScrollHasFinished();
     const currentPage = getCurrentPage();
     if (!scrollingMotion.isScrolling()) {
       resetActive();
@@ -262,8 +266,8 @@ const getCurrentAndNextPage = (pages) => {
   if (scrollingMotion.isScrolling()) {
     return {
       currentPage: scrollingMotion.scrollingFrom,
-      nextPage: scrollingMotion.scrollingTo
-    }
+      nextPage: scrollingMotion.scrollingTo,
+    };
   }
 
   let currentPage = null;
@@ -278,9 +282,9 @@ const getCurrentAndNextPage = (pages) => {
 
   return {
     currentPage,
-    nextPage: currentPage ? pages[i - 1] : pages[i]
-  }
-}
+    nextPage: currentPage ? pages[i - 1] : pages[i],
+  };
+};
 
 /**
  * Moves the navbar element horizontally while scrolling
