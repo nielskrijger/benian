@@ -21,7 +21,16 @@
       rel="stylesheet"
     />
 
-    <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="js/tags.js"></script>
+    <script type="text/javascript" src="js/navbar.js"></script>
+    <script>
+      const scrollDownArrow = () => {
+        // timeout necessary for FF and Safari to fix issue with innerHeight not set yet
+        setTimeout(() => {
+          window.scrollTo({ top: window.innerHeight, left: 0 });
+        }, 5);
+      };
+    </script>
   </head>
 
   <body>
@@ -80,7 +89,7 @@
 
     <nav id="navbar">
       <div class="navbar__content">
-        <a href="#content" class="nav__link" data-offset="6rem">EXPERIENCE</a>
+        <a href="#content" class="nav__link" data-offset="6rem">WORK</a>
         <a href="#education" class="nav__link" data-offset="-0.5rem">EDUCATION</a>
         <a href="#company-details" class="nav__link" data-offset="-6rem">CONTACT</a>
       </div>
@@ -88,209 +97,256 @@
 
     <main class="content" id="content">
       <div class="work">
-        <div class="work__experiences">
-          <div class="work__year">2020</div>
-          <div class="work__job work__job--right">
-            <div class="work__company">Nike</div>
-            <div class="work__job-title">Full Stack Developer</div>
-            <div class="work__freelance">Freelance</div>
-            <div class="work__tags">
-              <div class="tag">JavaScript</div>
-              <div class="tag">TypeScript</div>
-              <div class="tag">React</div>
-              <div class="tag">Redux</div>
-              <div class="tag">NodeJS</div>
-              <div class="tag">PostgreSQL</div>
-              <div class="tag">MySQL</div>
-              <div class="tag">Websockets</div>
-              <div class="tag">Jenkins</div>
-            </div>
+        <div class="highlight-tags__container">
+          <div
+            class="highlight-tags"
+            data-tags="JavaScript,TypeScript,CoffeeScript,C#,Python,Java,PHP,PL/SQL"
+          >
+            Languages
           </div>
-          <div class="work__year">2019</div>
-          <div class="work__job work__job--left">
-            <div class="work__company">PVH</div>
-            <div class="work__job-title">Full Stack Developer</div>
-            <div class="work__freelance">Freelance</div>
-            <div class="work__tags">
-              <div class="tag">JavaScript</div>
-              <div class="tag">NodeJS</div>
-              <div class="tag">PostgreSQL</div>
-              <div class="tag">React</div>
-              <div class="tag">React Native</div>
-              <div class="tag">Redux</div>
-              <div class="tag">Redis</div>
-            </div>
+          <div
+            class="highlight-tags"
+            data-tags="Database Systems,DynamoDB,MySQL,PostgreSQL,Couchbase,OracleDB,MongoDB,Redis"
+          >
+            Databases
           </div>
-          <div class="work__year">2018</div>
-          <div class="work__job work__job--right">
-            <div class="work__company">RTL</div>
-            <div class="work__job-title">Full Stack Developer</div>
-            <div class="work__freelance">Freelance</div>
-            <div class="work__tags">
-              <div class="tag">JavaScript</div>
-              <div class="tag">Python</div>
-              <div class="tag">C#</div>
-              <div class="tag">NodeJS</div>
-              <div class="tag">Microservices</div>
-              <div class="tag">React</div>
-              <div class="tag">Redux</div>
-              <div class="tag">OpenAPI</div>
-              <div class="tag">PostgreSQL</div>
-              <div class="tag">Redis</div>
-              <div class="tag">Varnish</div>
-              <div class="tag">Fleet</div>
-              <div class="tag">K8S</div>
-              <div class="tag">KOPS</div>
-              <div class="tag">Jenkins</div>
-            </div>
+          <div
+            class="highlight-tags"
+            data-tags="NGINX,AWS,Chef,Jenkins,KOPS,K8S,Fleet,Varnish,Apache,Heroku,Google Cloud,ELK"
+          >
+            DevOps
           </div>
-          <div class="work__year">2017</div>
-          <div class="work__job work__job--left">
-            <div class="work__company">oneUp / PVH</div>
-            <div class="work__job-title">Tech Lead</div>
-            <div class="work__tags">
-              <div class="tag">JavaScript</div>
-              <div class="tag">React</div>
-              <div class="tag">React Native</div>
-              <div class="tag">Redux</div>
-              <div class="tag">NodeJS</div>
-              <div class="tag">Redis</div>
-              <div class="tag">Heroku</div>
-            </div>
+          <div
+            class="highlight-tags"
+            data-tags="J2EE,AngularJS,Ruby on Rails,NodeJS,React,Doctrine,Symfony,Spring,JPA"
+          >
+            Frameworks
           </div>
-          <div class="work__job work__job--right">
-            <div class="work__company">Nolemmings</div>
-            <div class="work__job-title">Full Stack Developer</div>
-            <div class="work__tags">
-              <div class="tag">JavaScript</div>
-              <div class="tag">CoffeeScript</div>
-              <div class="tag">Python</div>
-              <div class="tag">Ionic</div>
-              <div class="tag">AngularJS</div>
-              <div class="tag">React</div>
-              <div class="tag">Redux</div>
-              <div class="tag">NodeJS</div>
-              <div class="tag">Google Cloud</div>
-              <div class="tag">MongoDB</div>
-              <div class="tag">Redis</div>
-              <div class="tag">Websockets</div>
-              <div class="tag">K8S</div>
-            </div>
+          <div class="highlight-tags" data-tags="React Native,Redux,Ionic">Mobile</div>
+          <div
+            class="highlight-tags"
+            data-tags="RabbitMQ,Joomla CMS,Drupal CMS,Contentful CMS,Mendix,Adobe Photoshop,Adobe InDesign,JasperSoft BI,GlassFish,Oracle BPM,Oracle SOA Suite,Oracle WebCenter,Oracle APEX,Oracle Data Integrator,Oracle BI Enterprise,WebLogic"
+          >
+            Apps
           </div>
-          <div class="work__year">2015</div>
-          <div class="work__job work__job--left">
-            <div class="work__company">IceMobile</div>
-            <div class="work__job-title">Full Stack Developer</div>
-            <div class="work__tags">
-              <div class="tag">Java</div>
-              <div class="tag">JavaScript</div>
-              <div class="tag">J2EE</div>
-              <div class="tag">NodeJS</div>
-              <div class="tag">Spring</div>
-              <div class="tag">Chef</div>
-              <div class="tag">AWS</div>
-              <div class="tag">MongoDB</div>
-              <div class="tag">DynamoDB</div>
-              <div class="tag">Couchbase</div>
-              <div class="tag">Redis</div>
-              <div class="tag">OpenAPI</div>
-              <div class="tag">RabbitMQ</div>
-              <div class="tag">OracleDB</div>
-              <div class="tag">WebLogic</div>
-              <div class="tag">Jenkins</div>
-            </div>
+          <div class="highlight-tags" data-tags="SOAP,WSDL,Microservices,WebSockets,OpenAPI">
+            Communication
           </div>
-          <div class="work__year">2013</div>
-          <div class="work__job work__job--right">
-            <div class="work__company">Oracle</div>
-            <div class="work__job-title">Jr SOA Consultant</div>
-            <div class="work__tags">
-              <div class="tag">Java</div>
-              <div class="tag">JavaScript</div>
-              <div class="tag">J2EE</div>
-              <div class="tag">WebLogic</div>
-              <div class="tag">Glassfish</div>
-              <div class="tag">OracleDB</div>
-              <div class="tag">SOAP</div>
-              <div class="tag">WSDL</div>
-              <div class="tag">PL/SQL</div>
-              <div class="tag">Oracle BPM</div>
-              <div class="tag">Oracle SOA Suite</div>
-              <div class="tag">Oracle WebCenter</div>
-              <div class="tag">Oracle APEX</div>
-              <div class="tag">Oracle Data Integrator</div>
-              <div class="tag">Oracle BI Enterprise</div>
-              <div class="tag">Jenkins</div>
-            </div>
-          </div>
-          <div class="work__year">2011</div>
-          <div class="work__job work__job--left">
-            <div class="work__company">CAPE Group</div>
-            <div class="work__job-title">Jr Systems Integrator</div>
-            <div class="work__tags">
-              <div class="tag">Mendix</div>
-              <div class="tag">Java</div>
-              <div class="tag">JasperSoft BI</div>
-            </div>
-          </div>
-          <div class="work__year">2009</div>
-          <div class="work__job work__job--right">
-            <div class="work__company">Topicus Finance</div>
-            <div class="work__job-title">Internship</div>
-            <div class="work__tags">
-              <div class="tag">Social Network Analysis</div>
-              <div class="tag">Pattern Languages</div>
-              <div class="tag">Organizational Patterns</div>
-              <div class="tag">Agile</div>
-            </div>
-          </div>
-          <div class="work__job work__job--left">
-            <div class="work__company">InDialoog</div>
-            <div class="work__job-title">Internship</div>
-            <div class="work__tags">
-              <div class="tag">Java</div>
-              <div class="tag">Adobe InDesign</div>
-            </div>
-          </div>
-          <div class="work__job work__job--right">
-            <div class="work__company">UTwente</div>
-            <div class="work__job-title">Teaching Assistent</div>
-            <div class="work__tags">
-              <div class="tag">Java</div>
-              <div class="tag">Database Systems</div>
-            </div>
-          </div>
-          <div class="work__job work__job--left">
-            <div class="work__company">Benian</div>
-            <div class="work__job-title">Owner</div>
-            <div class="work__tags">
-              <div class="tag">JavaScript</div>
-              <div class="tag">PHP</div>
-              <div class="tag">Python</div>
-              <div class="tag">Apache</div>
-              <div class="tag">Ruby on Rails</div>
-              <div class="tag">Adobe Photoshop</div>
-              <div class="tag">Symfony</div>
-              <div class="tag">Doctrine</div>
-              <div class="tag">MySQL</div>
-              <div class="tag">Drupal</div>
-              <div class="tag">Joomla</div>
-            </div>
-          </div>
-          <div class="work__year">2004</div>
         </div>
-        <div class="work__line"></div>
+        <div class="work__content">
+          <div class="work__experiences">
+            <div class="work__year">2020</div>
+            <div class="work__job work__job--right">
+              <div class="work__company">Nike</div>
+              <div class="work__job-title">Full Stack Developer</div>
+              <div class="work__freelance">Freelance</div>
+              <div class="work__tags">
+                <div class="tag">JavaScript</div>
+                <div class="tag">TypeScript</div>
+                <div class="tag">React</div>
+                <div class="tag">Redux</div>
+                <div class="tag">NodeJS</div>
+                <div class="tag">PostgreSQL</div>
+                <div class="tag">MySQL</div>
+                <div class="tag">WebSockets</div>
+                <div class="tag">Jenkins</div>
+                <div class="tag">AWS</div>
+              </div>
+            </div>
+            <div class="work__year">2019</div>
+            <div class="work__job work__job--left">
+              <div class="work__company">PVH</div>
+              <div class="work__job-title">Full Stack Developer</div>
+              <div class="work__freelance">Freelance</div>
+              <div class="work__tags">
+                <div class="tag">JavaScript</div>
+                <div class="tag">NodeJS</div>
+                <div class="tag">PostgreSQL</div>
+                <div class="tag">React</div>
+                <div class="tag">React Native</div>
+                <div class="tag">Redux</div>
+                <div class="tag">Redis</div>
+                <div class="tag">Contentful CMS</div>
+              </div>
+            </div>
+            <div class="work__year">2018</div>
+            <div class="work__job work__job--right">
+              <div class="work__company">RTL</div>
+              <div class="work__job-title">Full Stack Developer</div>
+              <div class="work__freelance">Freelance</div>
+              <div class="work__tags">
+                <div class="tag">JavaScript</div>
+                <div class="tag">Python</div>
+                <div class="tag">C#</div>
+                <div class="tag">NodeJS</div>
+                <div class="tag">Microservices</div>
+                <div class="tag">React</div>
+                <div class="tag">Redux</div>
+                <div class="tag">OpenAPI</div>
+                <div class="tag">PostgreSQL</div>
+                <div class="tag">Redis</div>
+                <div class="tag">NGINX</div>
+                <div class="tag">Varnish</div>
+                <div class="tag">Fleet</div>
+                <div class="tag">K8S</div>
+                <div class="tag">KOPS</div>
+                <div class="tag">ELK</div>
+                <div class="tag">Jenkins</div>
+              </div>
+            </div>
+            <div class="work__year">2017</div>
+            <div class="work__job work__job--left">
+              <div class="work__company">oneUp / PVH</div>
+              <div class="work__job-title">Tech Lead</div>
+              <div class="work__tags">
+                <div class="tag">JavaScript</div>
+                <div class="tag">React</div>
+                <div class="tag">React Native</div>
+                <div class="tag">Redux</div>
+                <div class="tag">NodeJS</div>
+                <div class="tag">Redis</div>
+                <div class="tag">Heroku</div>
+                <div class="tag">Contentful CMS</div>
+              </div>
+            </div>
+            <div class="work__job work__job--right">
+              <div class="work__company">Nolemmings</div>
+              <div class="work__job-title">Full Stack Developer</div>
+              <div class="work__tags">
+                <div class="tag">JavaScript</div>
+                <div class="tag">CoffeeScript</div>
+                <div class="tag">Python</div>
+                <div class="tag">Ionic</div>
+                <div class="tag">AngularJS</div>
+                <div class="tag">React</div>
+                <div class="tag">Redux</div>
+                <div class="tag">NodeJS</div>
+                <div class="tag">Google Cloud</div>
+                <div class="tag">MongoDB</div>
+                <div class="tag">Redis</div>
+                <div class="tag">WebSockets</div>
+                <div class="tag">K8S</div>
+              </div>
+            </div>
+            <div class="work__year">2015</div>
+            <div class="work__job work__job--left">
+              <div class="work__company">IceMobile</div>
+              <div class="work__job-title">Full Stack Developer</div>
+              <div class="work__tags">
+                <div class="tag">Java</div>
+                <div class="tag">JavaScript</div>
+                <div class="tag">J2EE</div>
+                <div class="tag">NodeJS</div>
+                <div class="tag">Spring</div>
+                <div class="tag">Chef</div>
+                <div class="tag">AWS</div>
+                <div class="tag">NGINX</div>
+                <div class="tag">MongoDB</div>
+                <div class="tag">DynamoDB</div>
+                <div class="tag">Couchbase</div>
+                <div class="tag">Redis</div>
+                <div class="tag">OracleDB</div>
+                <div class="tag">OpenAPI</div>
+                <div class="tag">RabbitMQ</div>
+                <div class="tag">WebLogic</div>
+                <div class="tag">Jenkins</div>
+              </div>
+            </div>
+            <div class="work__year">2013</div>
+            <div class="work__job work__job--right">
+              <div class="work__company">Oracle</div>
+              <div class="work__job-title">Jr SOA Consultant</div>
+              <div class="work__tags">
+                <div class="tag">Java</div>
+                <div class="tag">JavaScript</div>
+                <div class="tag">J2EE</div>
+                <div class="tag">WebLogic</div>
+                <div class="tag">GlassFish</div>
+                <div class="tag">OracleDB</div>
+                <div class="tag">JPA</div>
+                <div class="tag">SOAP</div>
+                <div class="tag">WSDL</div>
+                <div class="tag">PL/SQL</div>
+                <div class="tag">Oracle BPM</div>
+                <div class="tag">Oracle SOA Suite</div>
+                <div class="tag">Oracle WebCenter</div>
+                <div class="tag">Oracle APEX</div>
+                <div class="tag">Oracle Data Integrator</div>
+                <div class="tag">Oracle BI Enterprise</div>
+                <div class="tag">Jenkins</div>
+              </div>
+            </div>
+            <div class="work__year">2011</div>
+            <div class="work__job work__job--left">
+              <div class="work__company">CAPE Group</div>
+              <div class="work__job-title">Jr Systems Integrator</div>
+              <div class="work__tags">
+                <div class="tag">Mendix</div>
+                <div class="tag">Java</div>
+                <div class="tag">JasperSoft BI</div>
+              </div>
+            </div>
+            <div class="work__year">2009</div>
+            <div class="work__job work__job--right">
+              <div class="work__company">Topicus Finance</div>
+              <div class="work__job-title">Internship</div>
+              <div class="work__tags">
+                <div class="tag">Social Network Analysis</div>
+                <div class="tag">Pattern Languages</div>
+                <div class="tag">Organizational Patterns</div>
+                <div class="tag">Agile</div>
+              </div>
+            </div>
+            <div class="work__job work__job--left">
+              <div class="work__company">InDialoog</div>
+              <div class="work__job-title">Internship</div>
+              <div class="work__tags">
+                <div class="tag">Java</div>
+                <div class="tag">Adobe InDesign</div>
+              </div>
+            </div>
+            <div class="work__job work__job--right">
+              <div class="work__company">UTwente</div>
+              <div class="work__job-title">Teaching Assistent</div>
+              <div class="work__tags">
+                <div class="tag">Java</div>
+                <div class="tag">Database Systems</div>
+              </div>
+            </div>
+            <div class="work__job work__job--left">
+              <div class="work__company">Benian</div>
+              <div class="work__job-title">Owner</div>
+              <div class="work__tags">
+                <div class="tag">JavaScript</div>
+                <div class="tag">PHP</div>
+                <div class="tag">Python</div>
+                <div class="tag">Apache</div>
+                <div class="tag">Ruby on Rails</div>
+                <div class="tag">Adobe Photoshop</div>
+                <div class="tag">Symfony</div>
+                <div class="tag">Doctrine</div>
+                <div class="tag">MySQL</div>
+                <div class="tag">Drupal CMS</div>
+                <div class="tag">Joomla CMS</div>
+              </div>
+            </div>
+            <div class="work__year">2004</div>
+          </div>
+          <div class="work__line"></div>
+        </div>
       </div>
 
       <div class="education full-page" id="education">
         <div class="education__content">
           <div class="education__block">
+            <div class="education__year">2006 - 2011</div>
             <h3>Business Information Technology</h3>
             <div>Master Degree</div>
             <div>University of Twente</div>
           </div>
 
           <div class="education__block">
+            <div class="education__year">1999 - 2006</div>
             <h3>VWO (Highschool)</h3>
             <div>Nature & Technology</div>
             <div>Theresia Lyceum</div>
@@ -300,23 +356,30 @@
 
       <div class="company-details full-page" id="company-details">
         <div class="company-details__content">
-          <a href="https://www.linkedin.com/in/nielskrijger/">
+          <a href="https://github.com/nielskrijger" title="Github">
+            <svg>
+              <use xlink:href="./assets/github.svg#github"></use>
+            </svg>
+            GitHub
+          </a>
+
+          <a href="https://www.linkedin.com/in/nielskrijger/" title="LinkedIn">
             <svg>
               <use xlink:href="./assets/linkedin.svg#linkedin"></use>
             </svg>
             LinkedIn
           </a>
 
-          <a href="mailto:niels@kryger.nl" class="email">
+          <a href="mailto:niels@kryger.nl" title="Email">
             <svg>
               <use xlink:href="./assets/email.svg#email"></use>
             </svg>
-            niels@kryger.nl
+            Email
           </a>
 
-          <a href="https://www.nielskrijger.com">
+          <a href="https://www.nielskrijger.com" title="Weblog">
             <svg>
-              <use xlink:href="./assets/blog.svg#blog"></use>
+              <use xlink:href="./assets/weblog.svg#weblog"></use>
             </svg>
             Blog
           </a>
