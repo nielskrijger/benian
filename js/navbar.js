@@ -65,7 +65,7 @@ class ScrollMotion {
     return this.scrollingTo !== null;
   }
 
-  checkScrollHasFinished() {
+  updateScrollStatus() {
     if (
       this.isScrolling() &&
       Math.abs(this.scrollingTo.targetElement.getBoundingClientRect().top) <= 10
@@ -76,7 +76,7 @@ class ScrollMotion {
   }
 }
 
-const scrollingMotion = new ScrollMotion();
+const scrollMotion = new ScrollMotion();
 
 /**
  * Changes the navbar styling when clicking or scrolling through the page.
@@ -103,7 +103,7 @@ const initNavbarActive = () => {
   const handleClick = (page) => () => {
     resetActive();
     page.navLink.classList.add('nav__link--active');
-    scrollingMotion.setScrolling(getCurrentPage(), page);
+    scrollMotion.setScrolling(getCurrentPage(), page);
   };
 
   /**
@@ -111,9 +111,9 @@ const initNavbarActive = () => {
    * clicked on one of the nav links.
    */
   const handleScroll = () => {
-    scrollingMotion.checkScrollHasFinished();
+    scrollMotion.updateScrollStatus();
     const currentPage = getCurrentPage();
-    if (!scrollingMotion.isScrolling()) {
+    if (!scrollMotion.isScrolling()) {
       resetActive();
       if (currentPage) {
         currentPage.navLink.classList.add('nav__link--active');
@@ -140,14 +140,12 @@ const initNavbarActive = () => {
  * returns the origin and target pages instead.
  *
  * Returns nextPage = null when reading the last page.
- * Returns currentPage = null for the homepage which cannot be accessed through
- * the navbar.
  */
 const getCurrentAndNextPage = (pages) => {
-  if (scrollingMotion.isScrolling()) {
+  if (scrollMotion.isScrolling()) {
     return {
-      currentPage: scrollingMotion.scrollingFrom,
-      nextPage: scrollingMotion.scrollingTo,
+      currentPage: scrollMotion.scrollingFrom,
+      nextPage: scrollMotion.scrollingTo,
     };
   }
 
@@ -159,6 +157,10 @@ const getCurrentAndNextPage = (pages) => {
     if (pages[i].targetElement.getBoundingClientRect().top <= 0) {
       currentPage = pages[i];
     }
+  }
+
+  if (!currentPage) {
+    throw new Error('Unable to find current page');
   }
 
   return {
@@ -176,9 +178,7 @@ const initNavbarHorizontalMotion = () => {
   const handleScroll = () => {
     const { currentPage, nextPage } = getCurrentAndNextPage(pages);
 
-    const currentPageOffset = currentPage
-      ? parseInt(currentPage.navLink.getAttribute('data-offset'))
-      : 0;
+    const currentPageOffset = parseInt(currentPage.navLink.getAttribute('data-offset'));
 
     // Don't change offset when we've reached the last page
     if (nextPage === null) {
@@ -192,9 +192,7 @@ const initNavbarHorizontalMotion = () => {
     const distance = nextPageOffset - currentPageOffset;
 
     // Determine the progress how much of the distance has been traveled
-    const currentPageTop = currentPage
-      ? currentPage.targetElement.getBoundingClientRect().top
-      : -window.scrollY;
+    const currentPageTop = currentPage.targetElement.getBoundingClientRect().top;
     const nextPageTop = nextPage.targetElement.getBoundingClientRect().top;
     const totalHeight = Math.abs(nextPageTop - currentPageTop);
     const progress = Math.abs(currentPageTop) / totalHeight;

@@ -20,6 +20,9 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@700&family=Open+Sans:wght@300&family=Noto+Serif&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" sizes="16x16" href="./assets/favicon_16.png" />
+    <link rel="icon" sizes="32x32" href="./assets/favicon_32.png" />
+    <link rel="icon" sizes="64x64" href="./assets/favicon_64.png" />
 
     <script type="text/javascript" src="js/tags.js"></script>
     <script type="text/javascript" src="js/navbar.js"></script>
@@ -33,7 +36,7 @@
     </script>
   </head>
 
-  <body>
+  <body id="top">
     <a
       href="https://github.com/nielskrijger/benian"
       class="github-corner"
@@ -59,9 +62,7 @@
     </a>
     <div class="full-page" id="homepage">
       <div class="homepage__content">
-        <h1>BENIAN</h1>
-        Web Development<br />
-        By Niels Krijger
+        <object class="logo" data="./assets/benian-logo.svg" type="image/svg+xml"></object>
         <noscript>
           JavaScript is disabled. Quite a bit of this website won't work properly.
         </noscript>
@@ -89,6 +90,11 @@
 
     <nav id="navbar">
       <div class="navbar__content">
+        <a href="#top" class="nav__link" data-offset="-0.5rem">
+          <svg class="logo-symbol">
+            <use xlink:href="./assets/benian-symbol.svg#benian-symbol"></use>
+          </svg>
+        </a>
         <a href="#content" class="nav__link" data-offset="6rem">WORK</a>
         <a href="#education" class="nav__link" data-offset="-0.5rem">EDUCATION</a>
         <a href="#contact" class="nav__link" data-offset="-6rem">CONTACT</a>
@@ -129,7 +135,10 @@
           >
             Apps
           </div>
-          <div class="highlight-tags" data-tags="SOAP,WSDL,Microservices,WebSockets,OpenAPI">
+          <div
+            class="highlight-tags"
+            data-tags="SOAP,WSDL,Microservices,WebSockets,OpenAPI,OAuth,JWT"
+          >
             Communication
           </div>
         </div>
@@ -151,6 +160,7 @@
                 <div class="tag">Jenkins</div>
                 <div class="tag">AWS</div>
                 <div class="tag">WebSockets</div>
+                <div class="tag">JWT</div>
               </div>
             </div>
             <div class="work__year">2019</div>
@@ -167,6 +177,8 @@
                 <div class="tag">Redis</div>
                 <div class="tag">React Native</div>
                 <div class="tag">Contentful CMS</div>
+                <div class="tag">OAuth</div>
+                <div class="tag">JWT</div>
               </div>
             </div>
             <div class="work__year">2018</div>
@@ -227,6 +239,8 @@
                 <div class="tag">Google Cloud</div>
                 <div class="tag">K8S</div>
                 <div class="tag">WebSockets</div>
+                <div class="tag">OAuth</div>
+                <div class="tag">JWT</div>
               </div>
             </div>
             <div class="work__year">2015</div>

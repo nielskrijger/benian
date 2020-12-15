@@ -121,6 +121,15 @@ nav {
   align-items: center;
 }
 
+.navbar__content .logo-symbol {
+  height: 1rem;
+  width: 1rem;
+}
+
+.navbar__content #benian-symbol {
+  color: var(--primary-color);
+}
+
 .nav--sticky {
   position: fixed;
   top: 0;
@@ -149,7 +158,12 @@ a.nav__link--active {
 /* Homepage */
 
 .homepage__content {
-  height: 15rem;
+  height: 5rem;
+  text-align: center;
+}
+
+.homepage__content .logo {
+  width: 15rem;
 }
 
 .homepage__down-arrow {
