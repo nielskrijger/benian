@@ -399,6 +399,14 @@ a.nav__link--active {
   margin-bottom: 1rem;
 }
 
+.contact__button {
+  transition: all ease-in-out 0.2s;
+}
+
+.contact__button:hover {
+  transform: scale(1.075);
+}
+
 @media only screen and (min-width: 600px) {
   .contact__github:hover {
     color: #ffff03;
