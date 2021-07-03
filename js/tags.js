@@ -16,6 +16,93 @@ const tagColors = [
   '#ffc107',
 ];
 
+const tagConfig = {
+  Languages: {
+    tags: [
+      'JavaScript',
+      'TypeScript',
+      'CoffeeScript',
+      'Ruby',
+      'C#',
+      'Python',
+      'Java',
+      'PHP',
+      'PL/SQL',
+    ],
+  },
+  Databases: {
+    tags: [
+      'Database Systems',
+      'DynamoDB',
+      'MySQL',
+      'PostgreSQL',
+      'Couchbase',
+      'OracleDB',
+      'MongoDB',
+      'Redis',
+    ],
+  },
+  DevOps: {
+    tags: [
+      'NGINX',
+      'AWS',
+      'Chef',
+      'Jenkins',
+      'KOPS',
+      'K8S',
+      'Fleet',
+      'Varnish',
+      'Apache',
+      'Heroku',
+      'Google Cloud',
+      'ELK',
+    ],
+  },
+  Frameworks: {
+    tags: [
+      'Apollo',
+      'Redux Toolkit',
+      'Framer Motion',
+      'J2EE',
+      'AngularJS',
+      'Ruby on Rails',
+      'NodeJS',
+      'React',
+      'Redux',
+      'Doctrine',
+      'Symfony',
+      'Spring',
+      'JPA',
+    ],
+  },
+  Apps: {
+    tags: [
+      'RabbitMQ',
+      'Joomla CMS',
+      'Drupal CMS',
+      'Contentful CMS',
+      'Mendix',
+      'Adobe Photoshop',
+      'Adobe InDesign',
+      'JasperSoft BI',
+      'GlassFish',
+      'Oracle BPM',
+      'Oracle SOA Suite',
+      'Oracle WebCenter',
+      'Oracle APEX',
+      'Oracle Data Integrator',
+      'Oracle BI Enterprise',
+      'WebLogic',
+    ],
+  },
+  Communication: {
+    tags: ['GraphQL', 'SOAP', 'WSDL', 'Microservices', 'WebSockets', 'OpenAPI', 'OAuth', 'JWT'],
+  },
+};
+
+const activeTags = new Set();
+const tagButtons = new Map();
+
 const mix = (start, end, percent) => {
   return start + percent * (end - start);
 };
@@ -42,24 +129,46 @@ const mixColors = (color1, color2, percent) => {
 /**
  * Returns all elements with classname "tag" and groups them in a Map by their text.
  */
-const findTagGroups = () => {
+const findTagClusters = () => {
   const tags = document.getElementsByClassName('tag');
 
-  const tagGroups = new Map();
+  const clusters = new Map();
   for (let i = 0; i < tags.length; i++) {
     const text = tags[i].innerText;
-    let group = tagGroups.get(text);
+    let group = clusters.get(text);
     if (!group) {
       group = { tags: [], color: tagColors[i % tagColors.length] };
     }
-    tagGroups.set(text, { ...group, tags: [...group.tags, tags[i]] });
+    clusters.set(text, { ...group, tags: [...group.tags, tags[i]] });
   }
 
   // Order map alphabetically so that duplicate colors are less likely to be adjacent
-  return tagGroups;
+  return clusters;
 };
 
-const activeTags = new Set();
+/**
+ * Checks if all tags of a highlight button are activated. If so adds the --active
+ * class to the button, or removes it if there's at least one tag not highlighted.
+ */
+const checkTagHighlightButton = (tag) => {
+  const buttons = Array.from(tagButtons.entries());
+  const result = buttons.find(([, { tags }]) => tags.includes(tag.innerText));
+  if (!result) {
+    return; // No highlight button for this tag exists
+  }
+
+  const clusters = findTagClusters();
+  const [button, { tags }] = result;
+  const allTagsActive = tags.every((highlightTag) =>
+    clusters.get(highlightTag).tags.every((element) => activeTags.has(element))
+  );
+
+  if (allTagsActive) {
+    button.classList.add('highlight-tag-button--active');
+  } else {
+    button.classList.remove('highlight-tag-button--active');
+  }
+};
 
 const handleMouseOverTag = ({ tags, color }) => () => {
   for (const tag of tags) {
@@ -112,7 +221,7 @@ const handleClickTag = ({ tags, color }) => () => {
 };
 
 const initTagHighlighting = () => {
-  const groupedTags = findTagGroups().values();
+  const groupedTags = findTagClusters().values();
   let i = 0;
   for (const tagGroup of groupedTags) {
     for (const tag of tagGroup.tags) {
@@ -124,23 +233,18 @@ const initTagHighlighting = () => {
   }
 };
 
-const findTagHighlightButtons = () => {
-  const highlightButtons = new Map();
-  const buttons = document.getElementsByClassName('highlight-tags');
-  for (const button of [...buttons]) {
-    const tags = button.getAttribute('data-tags').split(',');
-    highlightButtons.set(button, tags);
-  }
-  return highlightButtons;
-};
-
 const initTagHighlightButtons = () => {
-  const tagGroups = findTagGroups();
-  for (const [button, highlightTags] of findTagHighlightButtons().entries()) {
+  const wrapper = document.getElementsByClassName('highlight-tag-buttons')[0];
+  for (const [text, buttonCfg] of Object.entries(tagConfig)) {
+    const { tags } = buttonCfg;
+    const button = document.createElement('button');
+    button.textContent = text;
+    button.setAttribute('class', 'highlight-tag-button');
     button.addEventListener('click', () => {
-      const isActive = button.classList.contains('highlight-tags--active');
-      highlightTags.forEach((highlightTag) => {
-        const { tags, color } = tagGroups.get(highlightTag);
+      const clusters = findTagClusters();
+      const isActive = button.classList.contains('highlight-tag-button--active');
+      tags.forEach((tag) => {
+        const { tags, color } = clusters.get(tag);
         for (const tag of tags) {
           if (!isActive) {
             activateTag(tag, color);
@@ -150,32 +254,9 @@ const initTagHighlightButtons = () => {
         }
       });
     });
-  }
-};
 
-/**
- * Checks if all tags of a highlight button are activated. If so adds the --active
- * class to the button, or removes it if there's at least one tag not higlighted.
- */
-const checkTagHighlightButton = (tag) => {
-  // All the lookups every time are a bit inefficient, but saw no performance issues.
-  // Some better state management wouldn't hurt though.
-  const buttons = Array.from(findTagHighlightButtons().entries());
-  const result = buttons.find(([, buttonTags]) => buttonTags.includes(tag.innerText));
-  if (!result) {
-    return; // No highlight button for this tag exists
-  }
-
-  const tagGroups = findTagGroups();
-  const [button, highlightTags] = result;
-  const allTagsActive = highlightTags.every((highlightTag) =>
-    tagGroups.get(highlightTag).tags.every((element) => activeTags.has(element))
-  );
-
-  if (allTagsActive) {
-    button.classList.add('highlight-tags--active');
-  } else {
-    button.classList.remove('highlight-tags--active');
+    wrapper.appendChild(button);
+    tagButtons.set(button, buttonCfg);
   }
 };
 
