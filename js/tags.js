@@ -263,12 +263,16 @@ const initTagHighlightButtons = () => {
     const clusters = findTagElementClusters();
     button.textContent = text;
     button.setAttribute('class', 'highlight-tag-button');
+
     button.addEventListener('mouseover', () => {
-      applyHoverStyle(button, color);
-      for (const tag of tags) {
-        handleMouseOverTag(clusters.get(tag))();
+      if (!areAllTagsActive(tags)) {
+        applyHoverStyle(button, color);
+        for (const tag of tags) {
+          handleMouseOverTag(clusters.get(tag))();
+        }
       }
     });
+
     button.addEventListener('mouseout', () => {
       if (!areAllTagsActive(tags)) {
         applyInactiveStyle(button);
@@ -277,6 +281,7 @@ const initTagHighlightButtons = () => {
         }
       }
     });
+
     button.addEventListener('click', () => {
       const isActive = button.classList.contains('highlight-tag-button--active');
       for (const tag of tags) {
