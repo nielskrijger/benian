@@ -136,106 +136,120 @@ const findTagConfig = (tag) => {
 /**
  * Returns all elements with classname "tag" and groups them in a Map by their text.
  */
-const findTagClusters = () => {
+const findTagElementClusters = () => {
   const tags = document.getElementsByClassName('tag');
 
   const clusters = new Map();
   for (let i = 0; i < tags.length; i++) {
     const text = tags[i].innerText;
-    let group = clusters.get(text);
+    let cluster = clusters.get(text);
     const color = findTagConfig(text).color;
-    if (!group) {
-      group = { tags: [], color: color };
+    if (!cluster) {
+      cluster = { elements: [], color: color };
     }
-    clusters.set(text, { ...group, tags: [...group.tags, tags[i]] });
+    clusters.set(text, { ...cluster, elements: [...cluster.elements, tags[i]] });
   }
 
   // Order map alphabetically so that duplicate colors are less likely to be adjacent
   return clusters;
 };
 
+const applyActiveStyle = (elm, color) => {
+  elm.style.borderColor = mixColors(color, '#111111', 0.3);
+  elm.style.backgroundColor = mixColors(color, '#111111', 0.6);
+  elm.style.boxShadow = `1px 0 10px 1px ${mixColors(color, '#111111', 0.4)}`;
+  elm.style.color = 'white';
+};
+
+const applyHoverStyle = (elm, color) => {
+  elm.style.borderColor = mixColors(color, '#111111', 0.4);
+  elm.style.backgroundColor = mixColors(color, '#111111', 0.7);
+  elm.style.boxShadow = `1px 0 10px 1px ${mixColors(color, '#111111', 0.6)}`;
+  elm.style.color = '#ccc';
+};
+
+const applyInactiveStyle = (elm) => {
+  elm.style.removeProperty('border-color');
+  elm.style.removeProperty('background-color');
+  elm.style.removeProperty('box-shadow');
+  elm.style.removeProperty('color');
+};
+
+const areAllTagsActive = (tags) => {
+  const clusters = findTagElementClusters();
+  return tags.every((highlightTag) =>
+    clusters.get(highlightTag).elements.every((element) => activeTags.has(element))
+  );
+};
+
 /**
  * Checks if all tags of a highlight button are activated. If so adds the --active
  * class to the button, or removes it if there's at least one tag not highlighted.
  */
-const checkTagHighlightButton = (tag) => {
+const checkTagHighlightButton = (elm) => {
   const buttons = Array.from(tagButtons.entries());
-  const result = buttons.find(([, { tags }]) => tags && tags.includes(tag.innerText));
+  const result = buttons.find(([, { tags }]) => tags && tags.includes(elm.innerText));
   if (!result) {
     return; // No highlight button for this tag exists
   }
 
-  const clusters = findTagClusters();
-  const [button, { tags }] = result;
-  const allTagsActive = tags.every((highlightTag) =>
-    clusters.get(highlightTag).tags.every((element) => activeTags.has(element))
-  );
+  const [button, { color, tags }] = result;
 
-  if (allTagsActive) {
+  if (areAllTagsActive(tags)) {
+    applyActiveStyle(button, color);
     button.classList.add('highlight-tag-button--active');
   } else {
+    applyInactiveStyle(button);
     button.classList.remove('highlight-tag-button--active');
   }
 };
 
-const handleMouseOverTag = ({ tags, color }) => () => {
-  for (const tag of tags) {
-    if (!activeTags.has(tag)) {
-      tag.style.borderColor = mixColors(color, '#111111', 0.4);
-      tag.style.backgroundColor = mixColors(color, '#111111', 0.7);
-      tag.style.boxShadow = `1px 0 10px 1px ${mixColors(color, '#111111', 0.6)}`;
+const handleMouseOverTag = ({ elements, color }) => () => {
+  for (const elm of elements) {
+    if (!activeTags.has(elm)) {
+      applyHoverStyle(elm, color);
     }
   }
 };
 
-const activateTag = (tag, color) => {
-  activeTags.add(tag);
-  tag.classList.add('tag--active');
-  tag.style.color = 'white';
-  tag.style.borderColor = mixColors(color, '#111111', 0.3);
-  tag.style.backgroundColor = mixColors(color, '#111111', 0.6);
-  tag.style.boxShadow = `1px 0 10px 1px ${mixColors(color, '#111111', 0.4)}`;
-
-  checkTagHighlightButton(tag);
+const activateTag = (elm, color) => {
+  activeTags.add(elm);
+  applyActiveStyle(elm, color);
+  checkTagHighlightButton(elm);
 };
 
-const deactivateTag = (tag) => {
-  activeTags.delete(tag);
-  tag.classList.remove('tag--active');
-  tag.style.color = null;
-  tag.style.borderColor = null;
-  tag.style.backgroundColor = null;
-  tag.style.boxShadow = null;
-
-  checkTagHighlightButton(tag);
+const deactivateTag = (elm) => {
+  activeTags.delete(elm);
+  applyInactiveStyle(elm);
+  checkTagHighlightButton(elm);
 };
 
-const handleMouseOutTag = (tags) => () => {
-  for (const tag of tags) {
-    if (!activeTags.has(tag)) {
-      deactivateTag(tag);
+const handleMouseOutTag = (elements) => () => {
+  for (const elm of elements) {
+    if (!activeTags.has(elm)) {
+      deactivateTag(elm);
     }
   }
 };
 
-const handleClickTag = ({ tags, color }) => () => {
-  for (const tag of tags) {
-    if (activeTags.has(tag)) {
-      deactivateTag(tag);
+const handleClickTag = ({ elements, color }) => () => {
+  for (const elm of elements) {
+    if (activeTags.has(elm)) {
+      deactivateTag(elm);
     } else {
-      activateTag(tag, color);
+      activateTag(elm, color);
     }
   }
 };
 
 const initTagHighlighting = () => {
-  const groupedTags = findTagClusters().values();
+  const clusters = findTagElementClusters().values();
   let i = 0;
-  for (const group of groupedTags) {
-    for (const tag of group.tags) {
-      tag.addEventListener('mouseover', handleMouseOverTag(group));
-      tag.addEventListener('mouseout', handleMouseOutTag(group.tags));
-      tag.addEventListener('click', handleClickTag(group));
+  for (const cluster of clusters) {
+    for (const elm of cluster.elements) {
+      elm.addEventListener('mouseover', handleMouseOverTag(cluster));
+      elm.addEventListener('mouseout', handleMouseOutTag(cluster.elements));
+      elm.addEventListener('click', handleClickTag(cluster));
     }
     i++;
   }
@@ -244,23 +258,37 @@ const initTagHighlighting = () => {
 const initTagHighlightButtons = () => {
   const wrapper = document.getElementsByClassName('highlight-tag-buttons')[0];
   for (const [text, cfg] of Object.entries(tagConfig)) {
-    const { tags } = cfg;
+    const { color, tags } = cfg;
     const button = document.createElement('button');
+    const clusters = findTagElementClusters();
     button.textContent = text;
     button.setAttribute('class', 'highlight-tag-button');
-    button.addEventListener('click', () => {
-      const clusters = findTagClusters();
-      const isActive = button.classList.contains('highlight-tag-button--active');
-      tags.forEach((tag) => {
-        const { tags, color } = clusters.get(tag);
+    button.addEventListener('mouseover', () => {
+      applyHoverStyle(button, color);
+      for (const tag of tags) {
+        handleMouseOverTag(clusters.get(tag))();
+      }
+    });
+    button.addEventListener('mouseout', () => {
+      if (!areAllTagsActive(tags)) {
+        applyInactiveStyle(button);
         for (const tag of tags) {
+          handleMouseOutTag(clusters.get(tag).elements)();
+        }
+      }
+    });
+    button.addEventListener('click', () => {
+      const isActive = button.classList.contains('highlight-tag-button--active');
+      for (const tag of tags) {
+        const { elements, color } = clusters.get(tag);
+        for (const tag of elements) {
           if (!isActive) {
             activateTag(tag, color);
           } else {
             deactivateTag(tag);
           }
         }
-      });
+      }
     });
 
     wrapper.appendChild(button);

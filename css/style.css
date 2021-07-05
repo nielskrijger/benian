@@ -240,18 +240,6 @@ a.nav__link--active {
   text-transform: uppercase;
 }
 
-.highlight-tag-button--active {
-  background-color: var(--primary-color);
-  color: var(--bg-color);
-}
-
-@media only screen and (min-width: 600px) {
-  .highlight-tag-button:not(.highlight-tag-button--active):hover {
-    color: var(--link-hover-color);
-    border-color: var(--link-hover-color);
-  }
-}
-
 .work__experiences {
   display: flex;
   flex-direction: column;
