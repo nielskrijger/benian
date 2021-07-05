@@ -4,12 +4,17 @@
   "description": "Benian.nl",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint */*.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nielskrijger/benian.git"
   },
+  "browserslist": [
+    "defaults",
+    "not IE 11"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
@@ -17,6 +22,9 @@
   },
   "homepage": "https://github.com/nielskrijger/benian#readme",
   "devDependencies": {
+    "eslint": "^7.30.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-compat": "^3.9.0",
     "prettier": "2.2.1"
   }
 }

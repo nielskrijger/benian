@@ -1,21 +1,3 @@
-const tagColors = [
-  '#00ff00',
-  '#ff0000',
-  '#021aee',
-  '#20c0ff',
-  '#d602ee',
-  '#ffff03',
-  '#ff3d00',
-  '#40ffff',
-  '#ff0266',
-  '#90ee02',
-  '#80cbc4',
-  '#bcaaa4',
-  '#ee6002',
-  '#709ddd',
-  '#ffc107',
-];
-
 const tagConfig = {
   Languages: {
     tags: [
@@ -29,6 +11,7 @@ const tagConfig = {
       'PHP',
       'PL/SQL',
     ],
+    color: '#00ff00',
   },
   Databases: {
     tags: [
@@ -41,6 +24,7 @@ const tagConfig = {
       'MongoDB',
       'Redis',
     ],
+    color: '#ff0000',
   },
   DevOps: {
     tags: [
@@ -57,6 +41,7 @@ const tagConfig = {
       'Google Cloud',
       'ELK',
     ],
+    color: '#20c0ff',
   },
   Frameworks: {
     tags: [
@@ -68,12 +53,15 @@ const tagConfig = {
       'Ruby on Rails',
       'NodeJS',
       'React',
+      'React Native',
+      'Ionic',
       'Redux',
       'Doctrine',
       'Symfony',
       'Spring',
       'JPA',
     ],
+    color: '#ffff03',
   },
   Apps: {
     tags: [
@@ -94,9 +82,15 @@ const tagConfig = {
       'Oracle BI Enterprise',
       'WebLogic',
     ],
+    color: '#ee6002',
   },
-  Communication: {
+  Api: {
     tags: ['GraphQL', 'SOAP', 'WSDL', 'Microservices', 'WebSockets', 'OpenAPI', 'OAuth', 'JWT'],
+    color: '#d602ee',
+  },
+  Method: {
+    tags: ['Social Network Analysis', 'Agile', 'Pattern Languages', 'Organizational Patterns'],
+    color: '#999999',
   },
 };
 
@@ -127,6 +121,19 @@ const mixColors = (color1, color2, percent) => {
 };
 
 /**
+ * Returns the tag config the tag is part of.
+ */
+const findTagConfig = (tag) => {
+  for (const [, cfg] of Object.entries(tagConfig)) {
+    const { tags } = cfg;
+    if (tags && tags.includes(tag)) {
+      return cfg;
+    }
+  }
+  throw new Error(`No config found for "${tag}"`);
+};
+
+/**
  * Returns all elements with classname "tag" and groups them in a Map by their text.
  */
 const findTagClusters = () => {
@@ -136,8 +143,9 @@ const findTagClusters = () => {
   for (let i = 0; i < tags.length; i++) {
     const text = tags[i].innerText;
     let group = clusters.get(text);
+    const color = findTagConfig(text).color;
     if (!group) {
-      group = { tags: [], color: tagColors[i % tagColors.length] };
+      group = { tags: [], color: color };
     }
     clusters.set(text, { ...group, tags: [...group.tags, tags[i]] });
   }
@@ -152,7 +160,7 @@ const findTagClusters = () => {
  */
 const checkTagHighlightButton = (tag) => {
   const buttons = Array.from(tagButtons.entries());
-  const result = buttons.find(([, { tags }]) => tags.includes(tag.innerText));
+  const result = buttons.find(([, { tags }]) => tags && tags.includes(tag.innerText));
   if (!result) {
     return; // No highlight button for this tag exists
   }
@@ -223,11 +231,11 @@ const handleClickTag = ({ tags, color }) => () => {
 const initTagHighlighting = () => {
   const groupedTags = findTagClusters().values();
   let i = 0;
-  for (const tagGroup of groupedTags) {
-    for (const tag of tagGroup.tags) {
-      tag.addEventListener('mouseover', handleMouseOverTag(tagGroup));
-      tag.addEventListener('mouseout', handleMouseOutTag(tagGroup.tags));
-      tag.addEventListener('click', handleClickTag(tagGroup));
+  for (const group of groupedTags) {
+    for (const tag of group.tags) {
+      tag.addEventListener('mouseover', handleMouseOverTag(group));
+      tag.addEventListener('mouseout', handleMouseOutTag(group.tags));
+      tag.addEventListener('click', handleClickTag(group));
     }
     i++;
   }
@@ -235,8 +243,8 @@ const initTagHighlighting = () => {
 
 const initTagHighlightButtons = () => {
   const wrapper = document.getElementsByClassName('highlight-tag-buttons')[0];
-  for (const [text, buttonCfg] of Object.entries(tagConfig)) {
-    const { tags } = buttonCfg;
+  for (const [text, cfg] of Object.entries(tagConfig)) {
+    const { tags } = cfg;
     const button = document.createElement('button');
     button.textContent = text;
     button.setAttribute('class', 'highlight-tag-button');
@@ -256,7 +264,7 @@ const initTagHighlightButtons = () => {
     });
 
     wrapper.appendChild(button);
-    tagButtons.set(button, buttonCfg);
+    tagButtons.set(button, cfg);
   }
 };
 
