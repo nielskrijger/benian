@@ -253,16 +253,18 @@ a.nav__link--active {
   padding: 0.3rem 0;
 }
 
-.work__year {
+.work__date {
   font-family: 'Open Sans Condensed', sans-serif;
   background-color: var(--primary-color);
   border: 2px solid var(--bg-color);
   color: var(--bg-color);
   display: inline-block;
-  width: 3.5rem;
+  width: 5rem;
+  padding-bottom: 0.1rem;
   left: 2rem;
   text-align: center;
   position: relative;
+  z-index: 2;
 }
 
 .work__line {
@@ -307,7 +309,7 @@ a.nav__link--active {
     align-items: center;
   }
 
-  .work__year {
+  .work__date {
     left: initial;
   }
 

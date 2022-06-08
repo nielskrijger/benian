@@ -1,94 +1,111 @@
 const tagConfig = {
   Languages: {
     tags: [
-      'JavaScript',
-      'TypeScript',
-      'CoffeeScript',
-      'Ruby',
       'C#',
-      'Python',
+      'CoffeeScript',
+      'Golang',
       'Java',
+      'JavaScript',
+      'Kotlin',
       'PHP',
       'PL/SQL',
+      'Python',
+      'Ruby',
+      'TypeScript',
     ],
     color: '#00ff00',
   },
   Frameworks: {
     tags: [
-      'Apollo',
-      'Redux Toolkit',
-      'Framer Motion',
-      'J2EE',
       'AngularJS',
-      'Ruby on Rails',
-      'NodeJS',
-      'React',
-      'React Native',
-      'Ionic',
-      'Redux',
+      'Apollo',
       'Doctrine',
-      'Symfony',
-      'Spring',
+      'FabricJS',
+      'Framer Motion',
+      'Ionic',
+      'J2EE',
       'JPA',
+      'NodeJS',
+      'React Native',
+      'React',
+      'Redux Toolkit',
+      'Redux',
+      'Ruby on Rails',
+      'Spring',
+      'Symfony',
     ],
     color: '#ff0000',
   },
   Databases: {
     tags: [
+      'BigQuery',
+      'Couchbase',
       'Database Systems',
       'DynamoDB',
-      'MySQL',
-      'PostgreSQL',
-      'Couchbase',
-      'OracleDB',
       'MongoDB',
+      'MySQL',
+      'OracleDB',
+      'PostgreSQL',
       'Redis',
     ],
     color: '#20c0ff',
   },
   DevOps: {
     tags: [
-      'NGINX',
       'AWS',
-      'Chef',
-      'Jenkins',
-      'KOPS',
-      'K8S',
-      'Fleet',
-      'Varnish',
       'Apache',
-      'Heroku',
-      'Google Cloud',
+      'Chef',
       'ELK',
+      'Fleet',
+      'GitLab',
+      'Google Cloud',
+      'Heroku',
+      'Istio',
+      'Jenkins',
+      'K8S',
+      'KOPS',
+      'Kubernetes',
+      'NGINX',
+      'Varnish',
     ],
     color: '#ffff03',
   },
   Apps: {
     tags: [
-      'RabbitMQ',
-      'Joomla CMS',
-      'Drupal CMS',
-      'Contentful CMS',
-      'Mendix',
-      'Adobe Photoshop',
       'Adobe InDesign',
-      'JasperSoft BI',
+      'Adobe Photoshop',
+      'Contentful CMS',
+      'Drupal CMS',
       'GlassFish',
+      'JasperSoft BI',
+      'Joomla CMS',
+      'Mendix',
+      'Oracle APEX',
+      'Oracle BI Enterprise',
       'Oracle BPM',
+      'Oracle Data Integrator',
       'Oracle SOA Suite',
       'Oracle WebCenter',
-      'Oracle APEX',
-      'Oracle Data Integrator',
-      'Oracle BI Enterprise',
+      'RabbitMQ',
       'WebLogic',
     ],
     color: '#ee6002',
   },
   Api: {
-    tags: ['GraphQL', 'SOAP', 'WSDL', 'Microservices', 'WebSockets', 'OpenAPI', 'OAuth', 'JWT'],
+    tags: [
+      'GraphQL',
+      'JWT',
+      'Microservices',
+      'OAuth',
+      'OpenAPI',
+      'SOAP',
+      'WSDL',
+      'WebSockets',
+      'gRPC',
+    ],
     color: '#d602ee',
   },
-  Method: {
+  Other: {
     tags: ['Social Network Analysis', 'Agile', 'Pattern Languages', 'Organizational Patterns'],
     color: '#999999',
   },
@@ -204,13 +221,15 @@ const checkTagHighlightButton = (elm) => {
   }
 };
 
-const handleMouseOverTag = ({ elements, color }) => () => {
-  for (const elm of elements) {
-    if (!activeTags.has(elm)) {
-      applyHoverStyle(elm, color);
+const handleMouseOverTag =
+  ({ elements, color }) =>
+  () => {
+    for (const elm of elements) {
+      if (!activeTags.has(elm)) {
+        applyHoverStyle(elm, color);
+      }
     }
-  }
-};
+  };
 
 const activateTag = (elm, color) => {
   activeTags.add(elm);
@@ -232,15 +251,17 @@ const handleMouseOutTag = (elements) => () => {
   }
 };
 
-const handleClickTag = ({ elements, color }) => () => {
-  for (const elm of elements) {
-    if (activeTags.has(elm)) {
-      deactivateTag(elm);
-    } else {
-      activateTag(elm, color);
+const handleClickTag =
+  ({ elements, color }) =>
+  () => {
+    for (const elm of elements) {
+      if (activeTags.has(elm)) {
+        deactivateTag(elm);
+      } else {
+        activateTag(elm, color);
+      }
     }
-  }
-};
+  };
 
 const initTagHighlighting = () => {
   const clusters = findTagElementClusters().values();
