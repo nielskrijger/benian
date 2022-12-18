@@ -17,6 +17,7 @@ const tagConfig = {
   },
   Frameworks: {
     tags: [
+      'Angular',
       'AngularJS',
       'Apollo',
       'Doctrine',
@@ -28,9 +29,11 @@ const tagConfig = {
       'NodeJS',
       'React Native',
       'React',
+      'Reactor',
       'Redux Toolkit',
       'Redux',
       'Ruby on Rails',
+      'RxJS',
       'Spring',
       'Symfony',
     ],
@@ -66,6 +69,7 @@ const tagConfig = {
       'KOPS',
       'Kubernetes',
       'NGINX',
+      'Prometheus',
       'Varnish',
     ],
     color: '#ffff03',
