@@ -177,9 +177,7 @@ const initNavbarHorizontalMotion = () => {
   let horizontalOffset = 0;
 
   const handleScroll = () => {
-    console.log('horizontalOffset', horizontalOffset);
     const { currentPage, nextPage } = getCurrentAndNextPage(pages);
-    console.log('{ currentPage, nextPage }', { currentPage, nextPage });
 
     const currentPageOffset = parseInt(currentPage.navLink.getAttribute('data-offset'));
 
@@ -194,15 +192,12 @@ const initNavbarHorizontalMotion = () => {
     // as a navlink).
     const nextPageOffset = parseInt(nextPage.navLink.getAttribute('data-offset'));
     const distance = nextPageOffset - currentPageOffset;
-    console.log('distance', distance);
 
     // Determine the progress how much of the distance has been traveled
     const currentPageTop = currentPage.targetElement.getBoundingClientRect().top;
     const nextPageTop = nextPage.targetElement.getBoundingClientRect().top;
     const totalHeight = Math.abs(nextPageTop - currentPageTop);
     const progress = Math.abs(currentPageTop) / totalHeight;
-
-    console.log('progress', progress);
 
     horizontalOffset = `${currentPageOffset + progress * distance}rem`;
     document.querySelector('.navbar__content').style.left = horizontalOffset;

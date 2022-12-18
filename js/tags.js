@@ -2,8 +2,10 @@ const tagConfig = {
   Languages: {
     tags: [
       'C#',
+      'CSS',
       'CoffeeScript',
       'Golang',
+      'HTML',
       'Java',
       'JavaScript',
       'Kotlin',
